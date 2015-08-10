@@ -115,6 +115,20 @@ router.route('/notas/:codigo/tags')
             });
        });
 
+router.route('/notas/:codigo/versao')
+
+      .get(function(req,res){
+            notas.findOne({codigo:req.params.codigo}).exec(function(err, notas){
+                  if (err)
+                          res.send(err);
+                  if (notas != null)
+                          res.json(notas.versao);
+                  else {
+                          res.json({message: "Não foi possível encontrar a nota!!"});
+                  }
+            });
+      });
+
 router.route('/notas/:codigo/arquivos')
 
       .get(function(req,res){
@@ -139,6 +153,9 @@ router.route('/notas/:codigo/arquivo/:arquivo')
 
                    if (notas != null) {
                           notas.arquivos.remove(req.params.arquivo);
+
+                          notas.versao.push(parseInt(notas.__v + 1));
+                          notas.versao.shift();
 
                           notas.save(function(err, notas){
                                 if (fs.existsSync(docs)){
