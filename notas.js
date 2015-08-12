@@ -257,7 +257,7 @@ router.route('/notas/new')
                    var Notas = new notas();
 
                    Notas.codigo = req.body.codigo.toUpperCase().trim();
-                   Notas.nota = req.body.nota;
+                   Notas.nota = decodeURIComponent(req.body.nota);
 
                    var files = req.files;
                    var fileKeys = Object.keys(req.files);
@@ -267,7 +267,7 @@ router.route('/notas/new')
                                 Notas.arquivos.push(arquivo);
                    });
 
-                   Notas.tags = req.body.tags;
+                   Notas.tags = decodeURIComponent(req.body.tags);
 
                    notas.findOne({codigo:Notas.codigo}, function(err, notas){
                         if (notas != null){
@@ -453,7 +453,7 @@ router.route('/notas/id/:nota_id')
                    if (notas == null){
                          res.json({message: "A nota não foi encontrada!!"});
                    } else {
-                          notas.nota = req.body.nota;
+                          notas.nota = decodeURIComponent(req.body.nota);
 
                           var files = req.files;
                           var fileKeys = Object.keys(req.files);
@@ -463,7 +463,7 @@ router.route('/notas/id/:nota_id')
                                       notas.arquivos.push(arquivo);
                           });
 
-                          notas.tags = req.body.tags;
+                          notas.tags = decodeURIComponent(req.body.tags);
 
                           notas.versao.push(parseInt(req.body.versao)+1);
                           notas.versao.shift();
@@ -550,7 +550,7 @@ router.route('/notas/codigo/:codigo')
                    if (notas == null){
                          res.json({message: "A nota não foi encontrada!!"});
                    } else {
-                          notas.nota = req.body.nota;
+                          notas.nota = decodeURIComponent(req.body.nota);
 
                           var files =req.files;
                           var fileKeys = Object.keys(req.files);
@@ -561,7 +561,7 @@ router.route('/notas/codigo/:codigo')
                                        notas.arquivos.push(arquivo);
                           });
 
-                          notas.tags = req.body.tags;
+                          notas.tags = decodeURIComponent(req.body.tags);
 
                           notas.versao.push(parseInt(req.body.versao)+1);
                           notas.versao.shift();
