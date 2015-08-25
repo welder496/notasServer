@@ -3,7 +3,7 @@
  * Version: 1.0.0.15
  */
 
-var fs = require('fs');
+var fs = require('extfs');
 var multer = require('multer');
 var util = require("util");
 var notas = require('./model/notas');
@@ -168,6 +168,10 @@ router.route('/notas/:codigo/arquivo/:arquivo')
                                                           }
                                                    }
                                              });
+                                             fs.isEmpty(docs+'/'+notas._id, function(empty){
+                                               if (empty)
+                                                   fs.rmdirSync(docs+'/'+notas._id);
+                                             });
                                       }
                                 }
                           });
@@ -280,16 +284,18 @@ router.route('/notas/new')
                                 Notas.save(function(err) {
                                       if (err)
                                              res.send(err);
-                                      fs.mkdir(docs,function(err){
-                                             fs.mkdir(docs+'/'+Notas._id,function(err){
-                                                   fileKeys.forEach(function(key){
-                                                          var arquivo = docs+'/'+Notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                                          var writeStream = fs.createWriteStream(arquivo);
-                                                          writeStream.write(files[key].buffer);
-                                                          writeStream.end();
+                                      if (Notas.arquivos.length > 0) {
+                                             fs.mkdir(docs,function(err){
+                                                   fs.mkdir(docs+'/'+Notas._id,function(err){
+                                                         fileKeys.forEach(function(key){
+                                                                var arquivo = docs+'/'+Notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
+                                                                var writeStream = fs.createWriteStream(arquivo);
+                                                                writeStream.write(files[key].buffer);
+                                                                writeStream.end();
+                                                         });
                                                    });
-                                            });
-                                      });
+                                             });
+                                      }
                                 });
                                 res.json({message: 'Nota criada com sucesso!'});
                           } else {
@@ -474,18 +480,20 @@ router.route('/notas/id/:nota_id')
 
                                        if (parseInt(req.body.versao) >= notas.__v) {
                                              notas.save(function(err) {
-                                                    if (err)
-                                                           res.send(err);
-                                                    fs.mkdir(docs,function(err){
-                                                           fs.mkdir(docs+'/'+notas._id,function(err){
-                                                                 fileKeys.forEach(function(key){
-                                                                       var arquivo = docs+'/'+notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                                                       var writeStream = fs.createWriteStream(arquivo);
-                                                                       writeStream.write(files[key].buffer);
-                                                                       writeStream.end();
-                                                                 });
+                                                   if (err)
+                                                         res.send(err);
+                                                   if (notas.arquivos.length > 0) {
+                                                          fs.mkdir(docs,function(err){
+                                                                 fs.mkdir(docs+'/'+notas._id,function(err){
+                                                                       fileKeys.forEach(function(key){
+                                                                             var arquivo = docs+'/'+notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
+                                                                             var writeStream = fs.createWriteStream(arquivo);
+                                                                             writeStream.write(files[key].buffer);
+                                                                             writeStream.end();
+                                                                       });
+                                                                });
                                                           });
-                                                    });
+                                                   }
                                               });
                                               res.json({message:"Nota alterada com sucesso!!"});
                                        } else {
@@ -511,7 +519,10 @@ router.route('/notas/id/:nota_id')
 			       	                    fs.unlinkSync(currentPath);
 			                          }
 		                          });
-	    	                          fs.rmdirSync(docs+'/'+notas._id);
+                                      fs.isEmpty(docs+'/'+notas._id, function(empty){
+                                             if (empty)
+                                                   fs.rmdirSync(docs+'/'+notas._id);
+                                      });
 	                         }
 	                   }
                           res.json({message: "Nota excluída com sucesso!!" });
@@ -572,18 +583,20 @@ router.route('/notas/codigo/:codigo')
 
                                        if (parseInt(req.body.versao) >= notas.__v) {
                                             notas.save(function(err) {
-                                                  if (err)
+                                                   if (err)
                                                          res.send(err);
-                                                  fs.mkdir(docs,function(err){
-                                                         fs.mkdir(docs+'/'+notas._id,function(err){
-                                                               fileKeys.forEach(function(key){
-                                                                      var arquivo = docs+'/'+notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                                                      var writeStream = fs.createWriteStream(arquivo);
-                                                                      writeStream.write(files[key].buffer);
-                                                                      writeStream.end();
-                                                               });
-                                                        });
-                                                  });
+                                                   if (notas.arquivos.length > 0) {
+                                                          fs.mkdir(docs,function(err){
+                                                                 fs.mkdir(docs+'/'+notas._id,function(err){
+                                                                       fileKeys.forEach(function(key){
+                                                                              var arquivo = docs+'/'+notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
+                                                                              var writeStream = fs.createWriteStream(arquivo);
+                                                                              writeStream.write(files[key].buffer);
+                                                                              writeStream.end();
+                                                                       });
+                                                                });
+                                                          });
+                                                   }
                                             });
                                              res.json({message: 'Nota alterada com sucesso!'});
                                       } else {
@@ -617,7 +630,10 @@ router.route('/notas/codigo/:codigo')
 				                          fs.unlinkSync(currentPath);
 			                          }
 		                          });
-		                          fs.rmdirSync(docs+'/'+id);
+                                      fs.isEmpty(docs+'/'+id, function(empty){
+                                             if (empty)
+                                                   fs.rmdirSync(docs+'/'+id);
+                                      });
 	                          }
 	                   }
                           res.json({message: 'Nota excluída com sucesso!!' });
