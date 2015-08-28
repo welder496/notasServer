@@ -24,7 +24,9 @@ var router = express.Router();
  */
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/Notas');
+mongoose.createConnection('mongodb://localhost:27017/Notas');
+mongoose.createConnection('mongodb://localhost:27017/Perfil');
+mongoose.createConnection('mongodb://localhost:27017/Funcionalidade');
 
 /*
  * Configuring CORS(CROSS ORIGIN RESOURCE SHARING) for access REST routines

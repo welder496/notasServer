@@ -19,6 +19,12 @@ var funcionalidade = new Schema({
     subtipos: [String]
 });
 
-module.exports = mongoose.model('Notas', notas);
-module.exports = mongoose.model('Perfil', perfil);
-module.exports = mongoose.model('Funcionalidade', funcionalidade);
+module.exports = {
+      Notas: notas,
+      Perfil: perfil,
+      Funcionalidade: funcionalidade
+};
+
+//mongoose.model('Notas', notas);
+//module.exports = mongoose.model('Perfil', perfil);
+//module.exports = mongoose.model('Funcionalidade', funcionalidade);
