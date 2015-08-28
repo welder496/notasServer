@@ -11,10 +11,12 @@ var notas   = new Schema({
 });
 
 var perfil = new Schema({
+    codigo: String,
     descricao: String
 });
 
 var funcionalidade = new Schema({
+    codigo: String,
     descricao: String,
     subtipos: [String]
 });

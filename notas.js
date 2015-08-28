@@ -53,7 +53,33 @@ app.use('/notas',router);
 app.use('/arquivos',express.static(docs));
 
 /*
- * Here are configured many roots to connect with mongo db
+ * Here are configured many roots to connect with mongo db for database Perfil
+ * This roots are REST roots that sends operations to mongo database
+ */
+
+router.route('/perfil/all')
+
+      .get(function(req,res){
+            perfil.find().sort({'descricao': -1}).exec(function(err, notas) {
+                    if (err)
+                          res.send(err);
+                    if (notas != null) {
+                          res.json(perfil);
+                    } else {
+                          res.json({message:"Perfis não foram encontrados!!"});
+                    }
+            });
+      });
+
+/*
+ * Here are configured many roots to connect with mongo db for database Funcionalidade
+ * This roots are REST roots that sends operations to mongo database
+ */
+
+
+
+/*
+ * Here are configured many roots to connect with mongo db for database Notas
  * This roots are REST roots that sends operations to mongo database
  */
 
