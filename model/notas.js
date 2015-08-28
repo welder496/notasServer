@@ -10,4 +10,15 @@ var notas   = new Schema({
     versao: {type: [Number], default: 0}
 });
 
+var perfil = new Schema({
+    descricao: String
+});
+
+var funcionalidade = new Schema({
+    descricao: String,
+    subtipos: [String]
+});
+
 module.exports = mongoose.model('Notas', notas);
+module.exports = mongoose.model('Perfil', perfil);
+module.exports = mongoose.model('Funcionalidade', funcionalidade);
