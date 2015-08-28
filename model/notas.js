@@ -26,7 +26,3 @@ module.exports = {
       Perfil: perfil,
       Funcionalidade: funcionalidade
 };
-
-//mongoose.model('Notas', notas);
-//module.exports = mongoose.model('Perfil', perfil);
-//module.exports = mongoose.model('Funcionalidade', funcionalidade);
