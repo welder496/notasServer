@@ -1,7 +1,7 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var notas   = new Schema({
+var notas = new Schema({
     codigo: String,
     nota: String,
     arquivos: [],
@@ -10,19 +10,4 @@ var notas   = new Schema({
     versao: {type: [Number], default: 0}
 });
 
-var perfil = new Schema({
-    codigo: String,
-    descricao: String
-});
-
-var funcionalidade = new Schema({
-    codigo: String,
-    descricao: String,
-    subtipos: [String]
-});
-
-module.exports = {
-      Notas: notas,
-      Perfil: perfil,
-      Funcionalidade: funcionalidade
-};
+module.exports = mongoose.model('Notas',notas);
