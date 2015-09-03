@@ -35,8 +35,9 @@ routerNotasId.route('/:nota_id')
                           var fileKeys = Object.keys(req.files);
                           fileKeys.forEach(function(key){
                                 var arquivo = files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                if (notas.arquivos.indexOf(arquivo) == -1)
-                                      notas.arquivos.push(arquivo);
+                                if (arquivo.substring(arquivo.lastIndexOf(".")).toLowerCase() != '.js')
+                                      if (notas.arquivos.indexOf(arquivo) == -1)
+                                            notas.arquivos.push(arquivo);
                           });
 
                           notas.tags = decodeURIComponent(req.body.tags);
@@ -57,9 +58,11 @@ routerNotasId.route('/:nota_id')
                                                                  fs.mkdir(docs+'/'+notas._id,function(err){
                                                                        fileKeys.forEach(function(key){
                                                                              var arquivo = docs+'/'+notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                                                             var writeStream = fs.createWriteStream(arquivo);
-                                                                             writeStream.write(files[key].buffer);
-                                                                             writeStream.end();
+                                                                             if (arquivo.substring(arquivo.lastIndexOf(".")).toLowerCase() != '.js') {
+                                                                                   var writeStream = fs.createWriteStream(arquivo);
+                                                                                   writeStream.write(files[key].buffer);
+                                                                                   writeStream.end();
+                                                                             }
                                                                        });
                                                                 });
                                                           });

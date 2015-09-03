@@ -19,8 +19,9 @@ routerNotasNew.route('/')
                    var fileKeys = Object.keys(req.files);
                    fileKeys.forEach(function(key){
                           var arquivo = files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                          if (Notas.arquivos.indexOf(arquivo) == -1)
-                                Notas.arquivos.push(arquivo);
+                          if (arquivo.substring(arquivo.lastIndexOf(".")).toLowerCase() != '.js')
+                                if (Notas.arquivos.indexOf(arquivo) == -1)
+                                      Notas.arquivos.push(arquivo);
                    });
 
                    Notas.tags = decodeURIComponent(req.body.tags);
@@ -41,9 +42,11 @@ routerNotasNew.route('/')
                                                    fs.mkdir(docs+'/'+Notas._id,function(err){
                                                          fileKeys.forEach(function(key){
                                                                 var arquivo = docs+'/'+Notas._id+'/'+files[key].originalname.replace(/[^a-zá-úÁ-Úâ-ûÂ-ÛA-Z0-9\-()\[\]\.]+/g,'_');
-                                                                var writeStream = fs.createWriteStream(arquivo);
-                                                                writeStream.write(files[key].buffer);
-                                                                writeStream.end();
+                                                                if (arquivo.substring(arquivo.lastIndexOf(".")).toLowerCase() != '.js') {
+                                                                      var writeStream = fs.createWriteStream(arquivo);
+                                                                      writeStream.write(files[key].buffer);
+                                                                      writeStream.end();
+                                                                }
                                                          });
                                                    });
                                              });
