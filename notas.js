@@ -29,7 +29,7 @@ var app        = express();
 var bodyParser = require('body-parser');
 var path = require('path');
 
-var docs = __dirname + '/documentos';
+var docs = __base + '/documentos';
 
 var port = process.env.PORT || 12345;
 
