@@ -10,8 +10,6 @@ var multer = require('multer');
 var util = require("util");
 
 var notas = require('./model/notas');
-var routerPerfil = require('./routes/routerPerfil');
-var routerFuncionalidade = require('./routes/routerFuncionalidade');
 var routerNotasTags = require('./routes/routerNotasTags');
 var routerNotasCodigoCodigo = require('./routes/routerNotasCodigoCodigo');
 var routerNotasId = require('./routes/routerNotasId');
@@ -66,8 +64,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(multer({inMemory:true}));
 app.use('/notas',router);
-app.use('/notas/perfil',routerPerfil);
-app.use('/notas/funcionalidade',routerFuncionalidade);
 app.use('/notas/notas/codigo',routerNotasCodigoCodigo);
 app.use('/notas/notas/id',routerNotasId);
 app.use('/notas/notas/:codigo',routerNotasParamCodigo);
@@ -84,7 +80,7 @@ app.use('/arquivos',express.static(docs));
  * Generic access to assess the application!!
  */
 router.get('/', function(req, res){
-   res.json({message: 'Aplicação notasPJEServer está funcionando!!'});
+   res.json({message: 'Aplicação notasServer está funcionando!!'});
 });
 
 console.log('Notas executando na porta ' + port);
